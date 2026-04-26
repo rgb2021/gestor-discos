@@ -10,7 +10,7 @@ pipeline {
 
         stage('Configure') {
             steps {
-                sh 'cmake -S . -B build -G Ninja'
+                sh 'cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release'
             }
         }
 
@@ -20,9 +20,15 @@ pipeline {
             }
         }
 
-        stage('Run') {
+        stage('Run app') {
             steps {
                 sh './build/gestor_discos'
+            }
+        }
+
+        stage('Run tests') {
+            steps {
+                sh 'ctest --test-dir build --output-on-failure'
             }
         }
     }
